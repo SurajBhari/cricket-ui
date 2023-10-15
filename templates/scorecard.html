@@ -1,0 +1,156 @@
+<html>
+    <head>
+        <style>
+            *{
+                font-family: 'Rubik', sans-serif;
+                color: white;
+            }
+            
+            .cricketScore{
+                display: flex;
+                width: 100%;
+                justify-content: space-between;
+                align-items: center;
+                height: 54px;
+                background-color: rgb(222,226,228);
+            }
+            
+            .score{
+                display: flex;
+            
+            }
+            
+            .flag1 img{
+                width: 50px;
+                border-radius: 5px;
+                margin-left: 20px;
+            }
+            
+            .flag2 img{
+                width: 50px;
+                border-radius: 5px;
+                margin-right: 20px;
+            }
+            
+            
+            
+            p{
+                margin: 0px;
+            }
+            
+            .mid {
+                display: flex;
+                align-items: center;
+                margin-top: 0px;
+                margin-left: 40px;
+                margin-right: 40px;
+                width: 400px;
+              }
+              
+              .mid h6, .mid div {
+                margin: 0;
+                padding: 5px;
+              }
+              
+              .mid h6 {
+                font-weight: bold;
+                margin-right: 10px;
+              }
+              
+              .mid div {
+                background-color: #fa079a;
+                color: #fff;
+                padding: 5px 10px;
+                border-radius: 5px;
+              }
+            
+              .team1{
+                max-width: 400px;
+                min-width: 200px;
+                margin-left: 10px;
+                
+              }
+            
+              .team2{
+                max-width: 400px;
+                min-width: 200px;
+                margin-left: 30px;
+              }
+            </style>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+        <link rel="stylesheet" href="index.css" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+        href="https://fonts.googleapis.com/css2?family=Rubik:wght@600&display=swap"
+        rel="stylesheet"
+        />
+        <script> 
+            // write a function that changes the value 
+            function update_data(b1_name, b2_name, b1_runs, b1_balls, b2_runs, b2_balls, other_team, team_playing, runs, wickets, over, ball, bowler, over_recent, bowler_wickets, bowler_runs) {
+                document.getElementById("b1name").innerHTML = b1_name;
+                document.getElementById("b2name").innerHTML = b2_name;
+                document.getElementById("b1stats").innerHTML = b1_runs + "(" + b1_balls + ")";
+                document.getElementById("b2stats").innerHTML = b2_runs + b2_balls ;
+                document.getElementById("otteam").innerHTML = other_team + " vs ";
+                document.getElementById("bat").innerHTML = team_playing;
+                document.getElementById("score").innerHTML = runs + "/" + wickets;
+                document.getElementById("over").innerHTML = over + "." + ball;
+                document.getElementById("bname").innerHTML = bowler;
+                document.getElementById("recentover").innerHTML = over_recent;
+                document.getElementById("bstats").innerHTML = bowler_wickets + "-" + bowler_runs;
+                //document.getElementById("teamname1").innerHTML = team_playing;
+                //document.getElementById("teamname2").innerHTML = other_team;
+            }
+
+            </script>
+    </head>
+    <body>
+        <div class="cricketScore">
+        <div class="flag1">
+            <h1 id="teamname1"> </h1>
+        </div>
+
+        <div class="score">
+            <div style="display: flex; background-color:rgb(120, 22, 120);">
+            <div class="team1">
+                <p id="b1name"></p>
+                <p id="b2name"></p>
+            </div>
+            <div style="margin-right: 10px">
+                <p id="b1stats"></p>
+                <p id="b2stats"></p>
+            </div>
+            </div>
+
+            <div style="background-color: rgb(51,4,112); max-width: 300px;">
+            <div class="mid" >
+                <h4 id= "otteam" style="font-size: 12px;"></h4> <h6 id="bat" style="font-size: 15px;"></h6>
+                <div id="score"></div>
+                <h6 id="over" style="font-size: 18px;"></h6>
+            </div>
+            <!--
+            <div style="text-align: center">
+                <h5 style="margin: 5px; font-size: 15px;">Target - 101</h5>
+            </div>-->
+            </div>
+
+            <div style="display: flex; background-color:rgb(120, 22, 120)">
+            <div class="team2">
+                <p id="bname"></p>
+                <p id="recentover"></p>
+            </div>
+            <div style="margin-right: 10px;">
+                <p id="bstats"></p>
+            </div>
+            </div>
+        </div>
+
+        <div class="flag2">
+            <h1 id="teamname2"> </h1>
+        </div>
+        </div>
+    </body>
+</html>
