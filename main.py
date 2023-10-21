@@ -50,7 +50,11 @@ def match(match_id, match_name):
                 else:
                     other_team = team1
                 print(team1,team2)
-                runs,wickets = x.split(' ')[1].split("/")
+                try:
+                    runs,wickets = x.split(' ')[1].split("/")
+                except ValueError:
+                    wickets = 10
+                    runs = x.split(' ')[1]
                 if "." in x.split(' ')[2]:
                     over,ball = x.split(' ')[2].split(".")
                     ball = ball.replace(")","")
