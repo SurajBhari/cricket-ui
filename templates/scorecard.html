@@ -86,7 +86,7 @@
         <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@600&display=swap" rel="stylesheet"/>
         <script> 
             function update_data(b1_name, b2_name, b1_runs, b1_balls, b2_runs, b2_balls, other_team, team_playing, runs, wickets, over, bowler, over_recent, bowler_wickets, bowler_runs, bowler_econ, target) {
-                document.getElementById("b1name").innerHTML = b1_name;
+                document.getElementById("b1name").innerHTML = "> "+b1_name;
                 document.getElementById("b2name").innerHTML = b2_name;
                 document.getElementById("b1stats").innerHTML = b1_runs + " (" + b1_balls + ")";
                 document.getElementById("b2stats").innerHTML = b2_runs + " (" + b2_balls + ")" ;
@@ -94,8 +94,14 @@
                 document.getElementById("bat").innerHTML = team_playing;
                 document.getElementById("score").innerHTML = runs + "/" + wickets;
                 document.getElementById("over").innerHTML = over;
+                // if bowler is not same as previous one then clear the reent one 
+                if(document.getElementById("bname").innerHTML != bowler){
+                    document.getElementById("recentover").innerHTML = "";
+                }
+                else{
+                    document.getElementById("recentover").innerHTML = over_recent;
+                }
                 document.getElementById("bname").innerHTML = bowler;
-                document.getElementById("recentover").innerHTML = over_recent;
                 document.getElementById("bstats").innerHTML = bowler_wickets + "-" + bowler_runs;
                 if(target != 0){
                     console.log(target);

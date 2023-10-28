@@ -41,17 +41,16 @@ def match(match_id, match_name):
                 bowler_eco = bwlr['bowlEcon']
                 b1 = data['miniscore']['batsmanStriker']
                 b2 = data['miniscore']['batsmanNonStriker']
-                inning = 1 
-                t1 = data['matchHeader']['matchTeamInfo'][-1]['battingTeamShortName']
-                t2 = data['matchHeader']['matchTeamInfo'][-1]['bowlingTeamShortName']
+                t1 = data['matchHeader']['matchTeamInfo'][-1]['bowlingTeamShortName']
+                t2 = data['matchHeader']['matchTeamInfo'][-1]['battingTeamShortName']
                 batsman_1 = b1['batName'].split(" ")[-1]
                 batsman_2 = b2['batName'].split(" ")[-1]
                 b1_runs = b1['batRuns']
                 b1_balls = b1['batBalls']
                 b2_runs = b2['batRuns']
                 b2_balls = b2['batBalls']
-                other_team = t2['shortName']
-                team_playing = t1['shortName']
+                other_team = t1
+                team_playing = t2
                 over = data['miniscore']['overs']
                 over_recent = data['miniscore']['recentOvsStats'].split("|")[-1]
                 try:
