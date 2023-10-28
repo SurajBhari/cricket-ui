@@ -94,13 +94,7 @@
                 document.getElementById("bat").innerHTML = team_playing;
                 document.getElementById("score").innerHTML = runs + "/" + wickets;
                 document.getElementById("over").innerHTML = over;
-                // if bowler is not same as previous one then clear the reent one 
-                if(document.getElementById("bname").innerHTML != bowler){
-                    document.getElementById("recentover").innerHTML = "";
-                }
-                else{
-                    document.getElementById("recentover").innerHTML = over_recent;
-                }
+                document.getElementById("recentover").innerHTML = over_recent;
                 document.getElementById("bname").innerHTML = bowler;
                 document.getElementById("bstats").innerHTML = bowler_wickets + "-" + bowler_runs;
                 if(target != 0){
