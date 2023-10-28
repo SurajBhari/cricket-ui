@@ -83,13 +83,9 @@
         <link rel="stylesheet" href="index.css" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-        <link
-        href="https://fonts.googleapis.com/css2?family=Rubik:wght@600&display=swap"
-        rel="stylesheet"
-        />
+        <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@600&display=swap" rel="stylesheet"/>
         <script> 
-            // write a function that changes the value 
-            function update_data(b1_name, b2_name, b1_runs, b1_balls, b2_runs, b2_balls, other_team, team_playing, runs, wickets, over, ball, bowler, over_recent, bowler_wickets, bowler_runs) {
+            function update_data(b1_name, b2_name, b1_runs, b1_balls, b2_runs, b2_balls, other_team, team_playing, runs, wickets, over, bowler, over_recent, bowler_wickets, bowler_runs) {
                 document.getElementById("b1name").innerHTML = b1_name;
                 document.getElementById("b2name").innerHTML = b2_name;
                 document.getElementById("b1stats").innerHTML = b1_runs + "(" + b1_balls + ")";
@@ -97,12 +93,10 @@
                 document.getElementById("otteam").innerHTML = other_team + " vs ";
                 document.getElementById("bat").innerHTML = team_playing;
                 document.getElementById("score").innerHTML = runs + "/" + wickets;
-                document.getElementById("over").innerHTML = over + "." + ball;
+                document.getElementById("over").innerHTML = over;
                 document.getElementById("bname").innerHTML = bowler;
                 document.getElementById("recentover").innerHTML = over_recent;
                 document.getElementById("bstats").innerHTML = bowler_wickets + "-" + bowler_runs;
-                //document.getElementById("teamname1").innerHTML = team_playing;
-                //document.getElementById("teamname2").innerHTML = other_team;
             }
 
             </script>
@@ -110,9 +104,8 @@
     <body>
         <div class="cricketScore">
         <div class="flag1">
-            <h1 id="teamname1"> </h1>
+            <img src="{{team1_flag}}" alt="" srcset="">
         </div>
-
         <div class="score">
             <div style="display: flex; background-color:rgb(120, 22, 120);">
             <div class="team1">
@@ -149,8 +142,8 @@
         </div>
 
         <div class="flag2">
-            <h1 id="teamname2"> </h1>
-        </div>
+            <img src="{{team2_flag}}" alt="" srcset="">
+          </div>
         </div>
     </body>
 </html>

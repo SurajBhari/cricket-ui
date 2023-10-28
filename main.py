@@ -16,81 +16,45 @@ def match(match_id, match_name):
         return "Please provide a cricbuzz url"
     
     cricbuzz_url = f"https://www.cricbuzz.com/live-cricket-scores/{match_id}/{match_name}"
+    api_link = f"https://www.cricbuzz.com/api/cricket-match/commentary/{match_id}"
     def gen():
         with app.app_context():
-            yield render_template("scorecard.html")
+            # take out the flags
+            html_data = get(cricbuzz_url.replace("live-cricket-scores","cricket-match-squads")).text
+            soup = BeautifulSoup(html_data, 'html.parser')
+            team1_flag = 'https://cricbuzz.com'+soup.find("a", class_="cb-team1").find("img")["src"]
+            team2_flag = 'https://cricbuzz.com'+soup.find("a", class_="cb-team2").find("img")["src"]
+            yield render_template("scorecard.html", team1_flag=team1_flag, team2_flag=team2_flag)
+            time.sleep(2)
         while True:
             try:
-                html_data = get(cricbuzz_url).text
-                soup = BeautifulSoup(html_data, 'html.parser')
-                try:
-                    x = soup.find('div', class_='cb-min-bat-rw').text.strip()
-                except AttributeError:
-                    try:
-                        x = soup.find('div', class_='cb-min-stts').text.strip()
-                        yield clean
-                        yield x
-                        return 
-                    except AttributeError:
-                        try:
-                            x = soup.find('div', class_='cb-scrcrd-status').text.strip()
-                            yield clean
-                            yield x
-                            return
-                        except AttributeError:
-                            yield clean
-                            yield "Match not started yet"
-                            return
-                team_playing = x.split(' ')[0].strip()
-                team1, team2 = match_name.split("-vs-")
-                team2 = team2.split("-")[0].upper()
-                team1 = team1.upper()
-                if team_playing == team1:
-                    other_team = team2
-                else:
-                    other_team = team1
-                print(team1,team2)
-                try:
-                    runs,wickets = x.split(' ')[1].split("/")
-                except ValueError:
-                    wickets = 10
-                    runs = x.split(' ')[1]
-                if "." in x.split(' ')[2]:
-                    over,ball = x.split(' ')[2].split(".")
-                    ball = ball.replace(")","")
-                else:
-                    over = x.split(' ')[2]
-                    ball = 0
-                over = over.replace("(","")
-                over = over.replace(")","")
-                batsmans = soup.find_all('div', class_='cb-col cb-col-50')
-                batsman_1 = batsmans[1].text.strip()
-                batsman_2 = batsmans[2].text.strip()
-                if batsman_2.lower() == "bowler":
-                    batsman_2 = ""
-                b1_runs = batsmans[1].parent.find_all("div")[1].text.strip()
-                b1_balls = batsmans[1].parent.find_all("div")[2].text.strip()
-                if batsman_2:
-                    b2_runs = batsmans[2].parent.find_all("div")[1].text.strip()
-                    b2_balls = batsmans[2].parent.find_all("div")[2].text.strip()
-                    b2_balls = f"({b2_balls})"
-                else:
-                    b2_runs = ""
-                    b2_balls = ""
-
-                bowler = batsmans[-2].text.strip()
-                bowler_overs = batsmans[-2].parent.find_all("div")[1].text.strip()
-                bowler_maidens = batsmans[-2].parent.find_all("div")[2].text.strip()
-                bowler_runs = batsmans[-2].parent.find_all("div")[3].text.strip()
-                bowler_wickets = batsmans[-2].parent.find_all("div")[4].text.strip()
-                bowler_eco = batsmans[-2].parent.find_all("div")[5].text.strip()
-                over_recent = soup.find('div', class_='cb-col cb-col-100 cb-font-12 cb-text-gray cb-min-rcnt').text.strip()
-                over_recent = over_recent.split("|")[-1]
-                over_recent = over_recent.replace(" ", "  ")
-                #function update_data(b1_name, b2_name, b1_runs, b1_balls, b2_runs, b2_balls, other_team, team_playing, runs, wickets, over, ball, bowler, over_recent, bowler_wickets, bowler_runs) {
-                to_yield = f"<script>update_data('> {batsman_1}', '  {batsman_2}', '{b1_runs}', '{b1_balls}', '{b2_runs}', '{b2_balls}', '{other_team}', '{team_playing}', '{runs}', '{wickets}', '{over}', '{ball}', '{bowler}', '{over_recent}', '{bowler_wickets}', '{bowler_runs}', '{bowler_overs}', '{bowler_maidens}', '{bowler_eco}')</script>"
+                data = get(api_link).json()
+                toss_win_str = f"{data['matchHeader']['tossResults']['tossWinnerName']} won the toss and elected for {data['matchHeader']['tossResults']['decision']}"
+                runs = data['miniscore']['batTeam']['teamScore']
+                wickets = data['miniscore']['batTeam']['teamWkts']
+                bwlr = data['miniscore']['bowlerStriker']
+                bowler = bwlr['bowlName']
+                bowler_wickets = bwlr['bowlWkts']
+                bowler_runs = bwlr['bowlRuns']
+                bowler_overs = bwlr['bowlOvs']
+                bowler_maidens = bwlr['bowlMaidens']
+                bowler_eco = bwlr['bowlEcon']
+                b1 = data['miniscore']['batsmanNonStriker']
+                b2 = data['miniscore']['batsmanStriker']
+                t1 = data['matchHeader']['team1']
+                t2 = data['matchHeader']['team2']
+                batsman_1 = b1['batName']
+                batsman_2 = b2['batName']
+                b1_runs = b1['batRuns']
+                b1_balls = b2['batBalls']
+                b2_runs = b2['batRuns']
+                b2_balls = b2['batBalls']
+                other_team = t2['shortName']
+                team_playing = t1['shortName']
+                over = data['miniscore']['overs']
+                over_recent = data['miniscore']['recentOvsStats'].split("|")[-1]
+                to_yield = f"<script>update_data('> {batsman_1}', '{batsman_2}', '{b1_runs}', '{b1_balls}', '{b2_runs}', '{b2_balls}', '{other_team}', '{team_playing}', '{runs}', '{wickets}', '{over}', '{bowler}', '{over_recent}', '{bowler_wickets}', '{bowler_runs}', '{bowler_overs}', '{bowler_maidens}', '{bowler_eco}')</script>"
                 yield to_yield
-
                 print(to_yield)
                 for x in range(waiting_interval):
                     print(f"waiting for another {waiting_interval-x}") 
