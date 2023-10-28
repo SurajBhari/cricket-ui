@@ -39,10 +39,11 @@ def match(match_id, match_name):
                 bowler_overs = bwlr['bowlOvs']
                 bowler_maidens = bwlr['bowlMaidens']
                 bowler_eco = bwlr['bowlEcon']
-                b1 = data['miniscore']['batsmanNonStriker']
-                b2 = data['miniscore']['batsmanStriker']
-                t1 = data['matchHeader']['team1']
-                t2 = data['matchHeader']['team2']
+                b1 = data['miniscore']['batsmanStriker']
+                b2 = data['miniscore']['batsmanNonStriker']
+                inning = 1 
+                t1 = data['matchHeader']['matchTeamInfo'][-1]['battingTeamShortName']
+                t2 = data['matchHeader']['matchTeamInfo'][-1]['bowlingTeamShortName']
                 batsman_1 = b1['batName'].split(" ")[-1]
                 batsman_2 = b2['batName'].split(" ")[-1]
                 b1_runs = b1['batRuns']
@@ -57,7 +58,8 @@ def match(match_id, match_name):
                     target = data['miniscore']['target']
                 except KeyError:
                     target = 0
-                to_yield = f"<script>update_data('> {batsman_1}', '{batsman_2}', '{b1_runs}', '{b1_balls}', '{b2_runs}', '{b2_balls}', '{other_team}', '{team_playing}', '{runs}', '{wickets}', '{over}', '{bowler}', '{over_recent}', '{bowler_wickets}', '{bowler_runs}', '{bowler_overs}', '{bowler_maidens}', '{bowler_eco}', {target})</script>"
+                # function update_data(b1_name, b2_name, b1_runs, b1_balls, b2_runs, b2_balls, other_team, team_playing, runs, wickets, over, bowler, over_recent, bowler_wickets, bowler_runs, bowler_econ, target)
+                to_yield = f"<script> update_data('{batsman_1}', '{batsman_2}', {b1_runs}, {b1_balls}, {b2_runs}, {b2_balls}, '{other_team}', '{team_playing}', {runs}, {wickets}, {over}, '{bowler}', '{over_recent}', {bowler_wickets}, {bowler_runs}, {bowler_eco}, {target});</script>)"
                 yield to_yield
                 print(to_yield)
                 for x in range(waiting_interval):
