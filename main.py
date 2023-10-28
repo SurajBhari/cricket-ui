@@ -33,7 +33,7 @@ def match(match_id, match_name):
                 runs = data['miniscore']['batTeam']['teamScore']
                 wickets = data['miniscore']['batTeam']['teamWkts']
                 bwlr = data['miniscore']['bowlerStriker']
-                bowler = bwlr['bowlName']
+                bowler = bwlr['bowlName'].split(" ")[-1]
                 bowler_wickets = bwlr['bowlWkts']
                 bowler_runs = bwlr['bowlRuns']
                 bowler_overs = bwlr['bowlOvs']
@@ -43,17 +43,21 @@ def match(match_id, match_name):
                 b2 = data['miniscore']['batsmanStriker']
                 t1 = data['matchHeader']['team1']
                 t2 = data['matchHeader']['team2']
-                batsman_1 = b1['batName']
-                batsman_2 = b2['batName']
+                batsman_1 = b1['batName'].split(" ")[-1]
+                batsman_2 = b2['batName'].split(" ")[-1]
                 b1_runs = b1['batRuns']
-                b1_balls = b2['batBalls']
+                b1_balls = b1['batBalls']
                 b2_runs = b2['batRuns']
                 b2_balls = b2['batBalls']
                 other_team = t2['shortName']
                 team_playing = t1['shortName']
                 over = data['miniscore']['overs']
                 over_recent = data['miniscore']['recentOvsStats'].split("|")[-1]
-                to_yield = f"<script>update_data('> {batsman_1}', '{batsman_2}', '{b1_runs}', '{b1_balls}', '{b2_runs}', '{b2_balls}', '{other_team}', '{team_playing}', '{runs}', '{wickets}', '{over}', '{bowler}', '{over_recent}', '{bowler_wickets}', '{bowler_runs}', '{bowler_overs}', '{bowler_maidens}', '{bowler_eco}')</script>"
+                try:
+                    target = data['miniscore']['target']
+                except KeyError:
+                    target = 0
+                to_yield = f"<script>update_data('> {batsman_1}', '{batsman_2}', '{b1_runs}', '{b1_balls}', '{b2_runs}', '{b2_balls}', '{other_team}', '{team_playing}', '{runs}', '{wickets}', '{over}', '{bowler}', '{over_recent}', '{bowler_wickets}', '{bowler_runs}', '{bowler_overs}', '{bowler_maidens}', '{bowler_eco}', {target})</script>"
                 yield to_yield
                 print(to_yield)
                 for x in range(waiting_interval):
