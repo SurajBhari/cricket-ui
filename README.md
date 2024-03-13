@@ -1,6 +1,14 @@
-# cricket-ui
-![image](https://github.com/SurajBhari/cricket-ui/assets/45149585/6bf29990-ae91-4e05-9a40-52a1a92de69b)
-A dynamic cricket score bar that can be used by streamers to show score on their live stream. </br>
-Try at the link given on the website tab on right.
+# Cricket-UI: Dynamic Cricket Score Bar for Streamers
 
-Credits :- [Rohit Chauhan](https://github.com/RohitChauhan98) For making the initial frontend.
+![Cricket-UI](https://github.com/SurajBhari/cricket-ui/assets/45149585/6bf29990-ae91-4e05-9a40-52a1a92de69b)
+
+Cricket-UI offers a dynamic cricket score bar designed specifically for streamers to display live scores seamlessly on their streams.
+
+## Try it out!
+Explore the functionality by visiting the provided link in the website tab on the right.
+
+## Credits
+A special thanks to [Rohit Chauhan](https://github.com/RohitChauhan98) for creating the initial frontend.
+
+---
+
