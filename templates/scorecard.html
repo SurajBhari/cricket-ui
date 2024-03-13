@@ -85,27 +85,33 @@
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
         <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@600&display=swap" rel="stylesheet"/>
         <script> 
-            function update_data(b1_name, b2_name, b1_runs, b1_balls, b2_runs, b2_balls, other_team, team_playing, runs, wickets, over, bowler, over_recent, bowler_wickets, bowler_runs, bowler_econ, target) {
-                document.getElementById("b1name").innerHTML = "> "+b1_name;
-                document.getElementById("b2name").innerHTML = b2_name;
-                document.getElementById("b1stats").innerHTML = b1_runs + " (" + b1_balls + ")";
-                document.getElementById("b2stats").innerHTML = b2_runs + " (" + b2_balls + ")" ;
-                document.getElementById("otteam").innerHTML = other_team + " vs ";
-                document.getElementById("bat").innerHTML = team_playing;
-                document.getElementById("score").innerHTML = runs + "/" + wickets;
-                document.getElementById("over").innerHTML = over;
-                document.getElementById("recentover").innerHTML = over_recent;
-                document.getElementById("bname").innerHTML = bowler;
-                document.getElementById("bstats").innerHTML = bowler_wickets + "-" + bowler_runs;
-                if(target != 0){
-                    console.log(target);
-                    document.getElementById("target").innerHTML = "Target - " + target;
-                }
-                else{
-                    document.getElementById("target").innerHTML = "";
-                }
+            function update_data() {
+                fetch('{{api_link}}')
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log(data);
+                        document.getElementById("b1name").innerHTML = "> "+data.batsman_1;
+                        document.getElementById("b2name").innerHTML = data.batsman_2;
+                        document.getElementById("b1stats").innerHTML = data.b1_runs + " (" + data.b1_balls + ")";
+                        document.getElementById("b2stats").innerHTML = data.b2_runs + " (" + data.b2_balls + ")" ;
+                        document.getElementById("otteam").innerHTML = data.other_team + " vs ";
+                        document.getElementById("bat").innerHTML = data.team_playing;
+                        document.getElementById("score").innerHTML = data.runs + "/" + data.wickets;
+                        document.getElementById("over").innerHTML = data.over;
+                        document.getElementById("recentover").innerHTML = data.over_recent;
+                        document.getElementById("bname").innerHTML = data.bowler;
+                        document.getElementById("bstats").innerHTML = data.bowler_wickets + "-" + data.bowler_runs;
+                        if(data.target != 0){
+                            document.getElementById("target").innerHTML = "Target - " + data.target;
+                        }
+                        else{
+                            document.getElementById("target").innerHTML = "";
+                        }
+                    })
+                    .catch(error => console.error('Error:', error));
             }
-
+            update_data();
+            setInterval(update_data, 10000);
             </script>
     </head>
     <body>
