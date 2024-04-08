@@ -17,9 +17,17 @@
             
             .score{
                 display: flex;
+                text-align: center;
             
             }
             
+            p {
+                margin:0; 
+                position: relative;
+                top: 25%;
+                font-size: medium;
+            }
+
             .flag1 img{
                 width: 50px;
                 border-radius: 5px;
@@ -32,11 +40,6 @@
                 margin-right: 20px;
             }
             
-            
-            
-            p{
-                margin: 0px;
-            }
             
             .mid {
                 display: flex;
@@ -103,9 +106,11 @@
                         document.getElementById("bstats").innerHTML = data.bowler_wickets + "-" + data.bowler_runs;
                         if(data.target != 0){
                             document.getElementById("target").innerHTML = "Target - " + data.target;
+                            document.getElementById("needs").innerHTML = data.need_string;
                         }
                         else{
                             document.getElementById("target").innerHTML = "";
+                            document.getElementById("needs").innerHTML = "";
                         }
                     })
                     .catch(error => console.error('Error:', error));
@@ -116,46 +121,45 @@
     </head>
     <body>
         <div class="cricketScore">
-        <div class="flag1">
-            <img src="{{team1_flag}}" alt="" srcset="">
-        </div>
-        <div class="score">
-            <div style="display: flex; background-color:rgb(120, 22, 120);">
-            <div class="team1">
-                <p id="b1name"></p>
-                <p id="b2name"></p>
+            <div class="flag1">
+                <img src="{{team1_flag}}" alt="" srcset="">
             </div>
-            <div style="margin-right: 10px">
-                <p id="b1stats"></p>
-                <p id="b2stats"></p>
-            </div>
+            <div class="score">
+                <div style="display: flex; background-color:rgb(120, 22, 120);">
+                    <div class="team1">
+                        <p id="b1name"></p>
+                        <p id="b2name"></p>
+                    </div>
+
+                    <div style="margin-right: 10px;" class="batsman-pane">
+                        <p id="b1stats"></p>
+                        <p id="b2stats"></p>
+                    </div>
+
+                    <div style="background-color: rgb(51,4,112); max-width: 300px;">
+                        <div class="mid" >
+                            <h4 id= "otteam" style="font-size: 12px;"></h4> <h6 id="bat" style="font-size: 15px;"></h6>
+                            <div id="score"></div>
+                            <h6 id="over" style="font-size: 18px;"></h6>
+                        </div>
+                        <h5 id='target' style="margin: 5px; font-size: 15px;"></h5>
+                    </div>
+
+                    <div class="team2">
+                        <p id="bname"></p>
+                        <p id="recentover"></p>
+                    </div>
+                    
+                    <div style="margin-right: 10px;" class="bowler-pane">
+                        <p id="bstats"></p>
+                        <p id="needs"></p>
+                    </div>
+                </div>
             </div>
 
-            <div style="background-color: rgb(51,4,112); max-width: 300px;">
-            <div class="mid" >
-                <h4 id= "otteam" style="font-size: 12px;"></h4> <h6 id="bat" style="font-size: 15px;"></h6>
-                <div id="score"></div>
-                <h6 id="over" style="font-size: 18px;"></h6>
+            <div class="flag2">
+                <img src="{{team2_flag}}" alt="" srcset="">
             </div>
-            <div style="text-align: center">
-                <h5 id='target' style="margin: 5px; font-size: 15px;"></h5>
-            </div>
-            </div>
-
-            <div style="display: flex; background-color:rgb(120, 22, 120)">
-            <div class="team2">
-                <p id="bname"></p>
-                <p id="recentover"></p>
-            </div>
-            <div style="margin-right: 10px;">
-                <p id="bstats"></p>
-            </div>
-            </div>
-        </div>
-
-        <div class="flag2">
-            <img src="{{team2_flag}}" alt="" srcset="">
-          </div>
         </div>
     </body>
 </html>
