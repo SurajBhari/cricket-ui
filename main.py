@@ -2,6 +2,7 @@ from flask import Flask, redirect, render_template, render_template_string, json
 import time
 from bs4 import BeautifulSoup
 from requests import get
+from json import load, loads, dump, dumps
 
 
 
@@ -55,8 +56,13 @@ def api(match_id):
         target = data['miniscore']['target']
     except KeyError:
         target = 0
-    # temporarily don't send target
-    target = 0
+    if target:
+        if runs >= target:
+            need_string = f'{team_playing} Won.'
+        else:
+            need_string = f'{team_playing} needs {target - runs} runs to win.'
+    else:
+        need_string = ""
     data = {
         "toss_win_str": toss_win_str,
         "runs": runs,
@@ -77,7 +83,8 @@ def api(match_id):
         "team_playing": team_playing,
         "over": over,
         "over_recent": over_recent,
-        "target": target
+        "target": target,
+        "need_string": need_string
     }
     return jsonify(data)    
 
