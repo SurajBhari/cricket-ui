@@ -1,8 +1,11 @@
 from flask import Flask, redirect, render_template, render_template_string, jsonify
 import time
+import re
 from bs4 import BeautifulSoup
 from requests import get
 from json import load, loads, dump, dumps
+
+UA = {"User-Agent": "Mozilla/5.0"}
 
 
 
@@ -90,14 +93,18 @@ def api(match_id):
 
 @app.route("/")
 def slash():
-    link = "https://www.cricbuzz.com/cricket-match/live-scores"
-    html = get(link).text
+    url = "https://www.cricbuzz.com/cricket-match/live-scores"
+    html = get(url, headers=UA).text
     soup = BeautifulSoup(html, 'html.parser')
     l = []
-    for match in soup.find_all("a", class_="text-hvr-underline text-bold"):
-        text = match.text.strip().replace(",", "")
-        link = "/".join(match["href"].split("/")[2:]) + "/"
-        l.append((text,link))
+    seen = set()
+    for match in soup.find_all("a", href=re.compile(r"^/live-cricket-scores/\d+/")):
+        slug = "/".join(match["href"].split("/")[2:]).rstrip("/") + "/"
+        if slug in seen:
+            continue
+        seen.add(slug)
+        text = (match.get("title") or match.text).strip().replace(",", "")
+        l.append((text, slug))
     return render_template("home.html", matches=l)
     
 
