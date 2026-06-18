@@ -18,19 +18,24 @@ clean = "<script>document.body.innerHTML = '';</script>"
 def match(match_id, match_name):
     if not any([match_id, match_name]):
         return "Please provide a cricbuzz url"
-    
+    # Flags used to be scraped from the squads page, but cricbuzz dropped that
+    # markup. The overlay no longer depends on them; pass empty values.
+    team1_flag = ""
+    team2_flag = ""
     cricbuzz_url = f"https://www.cricbuzz.com/live-cricket-scores/{match_id}/{match_name}"
-    # take out the flags
-    html_data = get(cricbuzz_url.replace("live-cricket-scores","cricket-match-squads")).text
-    soup = BeautifulSoup(html_data, 'html.parser')
-    team1_flag = soup.find("a", class_="cb-team1").find("img")["src"]
-    team2_flag =soup.find("a", class_="cb-team2").find("img")["src"]
-    return render_template("scorecard.html", team1_flag=team1_flag, team2_flag=team2_flag, api_link="/api/"+match_id)
+    return render_template("scorecard.html", team1_flag=team1_flag, team2_flag=team2_flag,
+                           api_link="/api/" + match_id, cricbuzz_url=cricbuzz_url)
     
 @app.route("/api/<match_id>")
 def api(match_id):
     api_link = f"https://www.cricbuzz.com/api/cricket-match/commentary/{match_id}"
-    data = get(api_link).json()
+    try:
+        resp = get(api_link, headers=UA, timeout=10)
+        data = resp.json()
+    except Exception:
+        # Cricbuzz retired this public endpoint (it now redirects). Degrade
+        # gracefully so the overlay shows an "unavailable" state instead of 500.
+        return jsonify({"available": False, "error": "Live score data is unavailable from cricbuzz."}), 200
     toss_win_str = f"{data['matchHeader']['tossResults']['tossWinnerName']} won the toss and elected for {data['matchHeader']['tossResults']['decision']}"
     runs = data['miniscore']['batTeam']['teamScore']
     wickets = data['miniscore']['batTeam']['teamWkts']
